@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Security.Cryptography;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -17,7 +18,10 @@ public class Bird : MonoBehaviour
 
     private void Update()
     {
-        if(_birdWasLuncheded && GetComponent<Rigidbody2D>().velocity.magnitude <= 0.1)
+        GetComponent<LineRenderer>().SetPosition(0, transform.position);
+        GetComponent<LineRenderer>().SetPosition(1, _initilaPosition);
+        
+        if (_birdWasLuncheded && GetComponent<Rigidbody2D>().velocity.magnitude <= 0.1)
         {
             _timeSettingAround += Time.deltaTime;
         }
@@ -36,12 +40,14 @@ public class Bird : MonoBehaviour
     private void OnMouseDown()
     {
         GetComponent<SpriteRenderer>().color = Color.red;
+        GetComponent<LineRenderer>().enabled = true;
     }
 
     private void OnMouseUp()
     {
         
         GetComponent<SpriteRenderer>().color = Color.white;
+        GetComponent<LineRenderer>().enabled = false;
         Vector2 directiontoInitialPosition = _initilaPosition - transform.position;
         GetComponent<Rigidbody2D>().AddForce(directiontoInitialPosition * _lunchPower);
         GetComponent<Rigidbody2D>().gravityScale = 1;
